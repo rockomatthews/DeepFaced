@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: #050816;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.32), transparent 34rem),
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.24), transparent 30rem),
+    #050816;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+canvas,
+video {
+  max-width: 100%;
+}

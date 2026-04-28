@@ -1,0 +1,52 @@
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { AppShell } from "@/components/AppShell";
+import { DownloadButtons } from "@/components/DownloadButtons";
+import { desktopReleases } from "@/data/downloads";
+
+export default function DownloadPage() {
+  return (
+    <AppShell>
+      <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
+        <Stack spacing={2}>
+          <Chip label="Desktop companion" color="secondary" variant="outlined" sx={{ alignSelf: "flex-start" }} />
+          <Typography variant="h2">Download Deep Faced for Mac</Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 820 }}>
+            The Mac app is the path to real virtual camera output for Zoom, Meet, Teams, and other
+            desktop apps. The website handles discovery and try-on; the Mac companion publishes the
+            processed feed as a camera device.
+          </Typography>
+          <DownloadButtons />
+        </Stack>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+            gap: 2,
+          }}
+        >
+          {desktopReleases.map((release) => (
+            <Card key={release.id}>
+              <CardContent>
+                <Typography variant="h4">{release.label}</Typography>
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  {release.notes}
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+                  <Chip label={release.platform} />
+                  <Chip label={release.status} color={release.status === "available" ? "success" : "default"} />
+                  <Chip label={release.version} />
+                </Stack>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
+      </Stack>
+    </AppShell>
+  );
+}

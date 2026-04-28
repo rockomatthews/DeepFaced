@@ -1,0 +1,3 @@
+module DeepFacedVirtualCamera {
+    header "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedVirtualCamera.build/include/DeepFacedVirtualCamera-Swift.h"
+}

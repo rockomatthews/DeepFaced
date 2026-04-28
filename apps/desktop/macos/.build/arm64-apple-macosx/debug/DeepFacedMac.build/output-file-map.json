@@ -1,0 +1,26 @@
+{
+  "": {
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/master.swiftdeps"
+  },
+  "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift": {
+    "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.d",
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.swift.o",
+    "swiftmodule": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView~partial.swiftmodule",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.swiftdeps",
+    "diagnostics": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.dia"
+  },
+  "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DeepFacedMacApp.swift": {
+    "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp.d",
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp.swift.o",
+    "swiftmodule": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp.swiftdeps",
+    "diagnostics": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp.dia"
+  },
+  "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DesktopAppModel.swift": {
+    "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel.d",
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel.swift.o",
+    "swiftmodule": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel.swiftdeps",
+    "diagnostics": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel.dia"
+  }
+}

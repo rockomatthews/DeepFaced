@@ -1,0 +1,14 @@
+{
+  "name": "@deep-faced/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "mac:build": "swift build --package-path macos",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@deep-faced/shared": "*"
+  },
+  "devDependencies": {}
+}
