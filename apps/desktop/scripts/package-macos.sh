@@ -6,6 +6,9 @@ DESKTOP_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REPO_DIR="$(cd "${DESKTOP_DIR}/../.." && pwd)"
 MACOS_DIR="${DESKTOP_DIR}/macos"
 BUILD_DIR="${MACOS_DIR}/.build"
+BUILD_ARCH="x86_64"
+BUILD_TRIPLE="${BUILD_ARCH}-apple-macosx"
+BUILD_PRODUCTS_DIR="${BUILD_DIR}/${BUILD_TRIPLE}/release"
 RELEASE_DIR="${DESKTOP_DIR}/dist/macos"
 APP_NAME="Deep Faced"
 APP_BUNDLE="${RELEASE_DIR}/${APP_NAME}.app"
@@ -13,16 +16,21 @@ EXTENSION_BUNDLE="${APP_BUNDLE}/Contents/Library/SystemExtensions/app.deepfaced.
 DMG_PATH="${REPO_DIR}/apps/web/public/downloads/deep-faced-mac-alpha.dmg"
 
 rm -rf "${RELEASE_DIR}"
-mkdir -p "${APP_BUNDLE}/Contents/MacOS" "${APP_BUNDLE}/Contents/Resources" "${EXTENSION_BUNDLE}/Contents/MacOS" "$(dirname "${DMG_PATH}")"
+mkdir -p "${APP_BUNDLE}/Contents/MacOS" "${APP_BUNDLE}/Contents/Frameworks" "${APP_BUNDLE}/Contents/Resources" "${EXTENSION_BUNDLE}/Contents/MacOS" "$(dirname "${DMG_PATH}")"
 
-swift build --package-path "${MACOS_DIR}" -c release --product DeepFacedMac
-swift build --package-path "${MACOS_DIR}" -c release --product DeepFacedCameraExtension
+swift build --package-path "${MACOS_DIR}" -c release --arch "${BUILD_ARCH}" --product DeepFacedMac
+swift build --package-path "${MACOS_DIR}" -c release --arch "${BUILD_ARCH}" --product DeepFacedCameraExtension
 
-cp "${BUILD_DIR}/release/DeepFacedMac" "${APP_BUNDLE}/Contents/MacOS/DeepFacedMac"
+cp "${BUILD_PRODUCTS_DIR}/DeepFacedMac" "${APP_BUNDLE}/Contents/MacOS/DeepFacedMac"
 cp "${MACOS_DIR}/Assets/Info.plist" "${APP_BUNDLE}/Contents/Info.plist"
-cp "${BUILD_DIR}/release/DeepFacedCameraExtension" "${EXTENSION_BUNDLE}/Contents/MacOS/DeepFacedCameraExtension"
+cp "${BUILD_PRODUCTS_DIR}/DeepFacedCameraExtension" "${EXTENSION_BUNDLE}/Contents/MacOS/DeepFacedCameraExtension"
 cp "${MACOS_DIR}/Assets/CameraExtension/Info.plist" "${EXTENSION_BUNDLE}/Contents/Info.plist"
 cp "${MACOS_DIR}/Assets/CameraExtension/DeepFacedCameraExtension.entitlements" "${EXTENSION_BUNDLE}/Contents/DeepFacedCameraExtension.entitlements"
+
+if [[ -d "${BUILD_PRODUCTS_DIR}/DeepAR.framework" ]]; then
+  ditto "${BUILD_PRODUCTS_DIR}/DeepAR.framework" "${APP_BUNDLE}/Contents/Frameworks/DeepAR.framework"
+  install_name_tool -add_rpath "@executable_path/../Frameworks" "${APP_BUNDLE}/Contents/MacOS/DeepFacedMac" 2>/dev/null || true
+fi
 
 if [[ -d "${MACOS_DIR}/Effects" ]]; then
   rm -rf "${APP_BUNDLE}/Contents/Resources/Effects"

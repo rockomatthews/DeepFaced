@@ -22,9 +22,9 @@ the practical route is a paired Mac app plus iPhone camera/renderer handoff.
 ## Current App Shape
 
 - Native shell: SwiftUI app scaffold in [macos](../macos).
-- Renderer: SwiftUI camera preview with AVFoundation capture and Vision face detection. The current
-  prototype moves and scales a stylized face overlay with the detected face rectangle; DeepAR mesh
-  deformation should replace the overlay renderer when native DeepAR assets are available.
+- Renderer: AVFoundation camera capture feeds bundled `.deepar` effects into DeepAR's native
+  offscreen renderer when a license key is available. Without a key, the app falls back to the
+  prototype overlay renderer so local development can still exercise the camera pipeline.
 - Bridge: `DeepFacedVirtualCamera` module receives processed frame metadata from the tracker. The
   current publisher stores the latest frame and validates the runtime pipeline; a real Camera
   Extension implementation still needs to copy composed pixel buffers into the system extension.
@@ -55,7 +55,8 @@ feature explicitly asks the user to export or share media.
    with AVFoundation and Vision.
 3. Send selected preset IDs and normalized face frames into the virtual camera pipeline. Done in the
    prototype publisher boundary.
-4. Render composed pixel buffers in the desktop renderer.
+4. Render composed pixel buffers in the desktop renderer. Done with DeepAR offscreen rendering for
+   Intel macOS builds and a prototype fallback when DeepAR is unavailable.
 5. Copy composed pixel buffers into a native Camera Extension bridge.
 6. Publish a macOS virtual camera device.
 7. Add diagnostics for permissions, camera device state, frame rate, and dropped frames.

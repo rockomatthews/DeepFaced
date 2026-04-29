@@ -26,6 +26,10 @@ The generated DMG is written to:
 apps/web/public/downloads/deep-faced-mac-alpha.dmg
 ```
 
+DeepAR's current macOS framework is Intel-only, so the package script builds the app and camera
+extension with `--arch x86_64`. On Apple Silicon Macs, run the packaged app under Rosetta until
+DeepAR ships a native Apple Silicon macOS framework.
+
 The app target uses this camera permission string:
 
 ```xml

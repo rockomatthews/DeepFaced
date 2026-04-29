@@ -67,8 +67,6 @@ public final class DeepAREffectRenderer: EffectFrameRendering {
             throw EffectRendererError.missingEffectPackage(effectPackagePath)
         }
 
-        // Integration point for DeepAR's native renderer once the SDK and license are available.
-        // The renderer should load effectPackagePath and return a composed CVPixelBuffer.
         throw EffectRendererError.deepARSDKUnavailable
     }
 }

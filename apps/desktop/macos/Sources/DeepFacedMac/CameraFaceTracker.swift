@@ -15,10 +15,7 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
     var renderedFrameHandler: ((RenderedFrame) -> Void)?
 
     private let prototypeRenderer = PrototypeOverlayEffectRenderer()
-    private let deepARRenderer = DeepAREffectRenderer()
-    private var rendererMode: EffectRendererMode {
-        ProcessInfo.processInfo.environment["DEEPFACED_RENDERER"] == "deepar" ? .deepAR : .prototypeOverlay
-    }
+    private let deepARRenderer = NativeDeepAREffectRenderer(licenseKey: DeepARLicense.current())
     private let videoOutput = AVCaptureVideoDataOutput()
     private let captureQueue = DispatchQueue(label: "app.deepfaced.camera.capture")
     private let visionQueue = DispatchQueue(label: "app.deepfaced.camera.vision")
@@ -72,9 +69,12 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
             }
 
             do {
-                let renderer: EffectFrameRendering = self.rendererMode == .deepAR
-                    ? self.deepARRenderer
-                    : self.prototypeRenderer
+                let renderer: EffectFrameRendering
+                if let deepARRenderer = self.deepARRenderer {
+                    renderer = deepARRenderer
+                } else {
+                    renderer = self.prototypeRenderer
+                }
                 let composedBuffer = try renderer.render(
                     sourcePixelBuffer: pixelBuffer,
                     normalizedFaceFrame: nextFrame,
@@ -94,7 +94,10 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
 
                 DispatchQueue.main.async {
                     self.faceFrame = nextFrame
-                    self.cameraStatus = nextFrame == nil ? "Looking for a face..." : "Face locked. Mask follows your head."
+                    let rendererLabel = renderer.mode == .deepAR ? "DeepAR" : "prototype"
+                    self.cameraStatus = nextFrame == nil
+                        ? "Looking for a face... Rendering with \(rendererLabel)."
+                        : "Face locked. Rendering with \(rendererLabel)."
                     self.renderedFrameHandler?(renderedFrame)
                     self.isProcessingFrame = false
                 }
