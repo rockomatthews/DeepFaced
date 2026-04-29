@@ -1,0 +1,13 @@
+{
+  "": {
+    "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/DeepFacedCameraExtension.d",
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/DeepFacedCameraExtension.o",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/master.swiftdeps"
+  },
+  "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedCameraExtension/main.swift": {
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/main.swift.o",
+    "swiftmodule": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/main.swiftdeps",
+    "diagnostics": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/release/DeepFacedCameraExtension.build/main.dia"
+  }
+}

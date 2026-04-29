@@ -8,11 +8,16 @@ let package = Package(
         .macOS(.v14)
     ],
     products: [
-        .executable(name: "DeepFacedMac", targets: ["DeepFacedMac"])
+        .executable(name: "DeepFacedMac", targets: ["DeepFacedMac"]),
+        .executable(name: "DeepFacedCameraExtension", targets: ["DeepFacedCameraExtension"])
     ],
     targets: [
         .executableTarget(
             name: "DeepFacedMac",
+            dependencies: ["DeepFacedVirtualCamera"]
+        ),
+        .executableTarget(
+            name: "DeepFacedCameraExtension",
             dependencies: ["DeepFacedVirtualCamera"]
         ),
         .target(name: "DeepFacedVirtualCamera")

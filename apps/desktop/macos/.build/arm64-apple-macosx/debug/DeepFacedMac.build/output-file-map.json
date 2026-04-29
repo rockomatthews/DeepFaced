@@ -2,6 +2,13 @@
   "": {
     "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/master.swiftdeps"
   },
+  "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/CameraFaceTracker.swift": {
+    "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.d",
+    "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.swift.o",
+    "swiftmodule": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker~partial.swiftmodule",
+    "swift-dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.swiftdeps",
+    "diagnostics": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.dia"
+  },
   "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift": {
     "dependencies": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.d",
     "object": "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.swift.o",

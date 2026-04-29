@@ -17,11 +17,104 @@
 
   ],
   "swiftCommands" : {
+    "C.DeepFacedCameraExtension-arm64-apple-macosx26.0-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/sources",
+      "importPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedCameraExtension/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules/DeepFacedVirtualCamera.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "DeepFacedCameraExtension",
+      "moduleOutputPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules/DeepFacedCameraExtension.swiftmodule",
+      "objects" : [
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/main.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "DeepFacedCameraExtension_main",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "macos"
+      ],
+      "outputFileMapPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules/DeepFacedCameraExtension.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedCameraExtension/main.swift"
+      ],
+      "tempsPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build",
+      "wholeModuleOptimization" : false
+    },
     "C.DeepFacedMac-arm64-apple-macosx26.0-debug.module" : {
       "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
       "fileList" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/sources",
       "importPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules",
       "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/CameraFaceTracker.swift"
+        },
         {
           "kind" : "file",
           "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift"
@@ -51,6 +144,7 @@
       "moduleName" : "DeepFacedMac",
       "moduleOutputPath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules/DeepFacedMac.swiftmodule",
       "objects" : [
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.swift.o",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.swift.o",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DeepFacedMacApp.swift.o",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/DesktopAppModel.swift.o"
@@ -102,6 +196,10 @@
       "outputs" : [
         {
           "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/ContentView.swift.o"
         },
         {
@@ -119,6 +217,7 @@
       ],
       "prepareForIndexing" : false,
       "sources" : [
+        "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/CameraFaceTracker.swift",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DeepFacedMacApp.swift",
         "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DesktopAppModel.swift"
@@ -216,6 +315,60 @@
 
   },
   "swiftTargetScanArgs" : {
+    "DeepFacedCameraExtension" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "DeepFacedCameraExtension",
+      "-package-name",
+      "macos",
+      "-c",
+      "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedCameraExtension/main.swift",
+      "-I",
+      "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "DeepFacedCameraExtension_main",
+      "-swift-version",
+      "5",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "macos",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ],
     "DeepFacedMac" : [
       "/Library/Developer/CommandLineTools/usr/bin/swiftc",
       "-module-name",
@@ -223,6 +376,7 @@
       "-package-name",
       "macos",
       "-c",
+      "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/CameraFaceTracker.swift",
       "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift",
       "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DeepFacedMacApp.swift",
       "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/DesktopAppModel.swift",
@@ -328,6 +482,9 @@
     ]
   },
   "targetDependencyMap" : {
+    "DeepFacedCameraExtension" : [
+      "DeepFacedVirtualCamera"
+    ],
     "DeepFacedMac" : [
       "DeepFacedVirtualCamera"
     ],
@@ -347,6 +504,52 @@
     }
   },
   "writeCommands" : {
+    "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension-entitlement.plist"
+    },
+    "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedCameraExtension/main.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/sources"
+    },
+    "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedVirtualCamera.build/VirtualCameraService.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedCameraExtension.product/Objects.LinkFileList"
+    },
     "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac-entitlement.plist" : {
       "alwaysOutOfDate" : false,
       "inputs" : [
@@ -370,6 +573,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/CameraFaceTracker.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/Sources/DeepFacedMac/ContentView.swift"
         },
         {
@@ -389,6 +596,10 @@
         {
           "kind" : "virtual",
           "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rob/Code/DeepFaced/apps/desktop/macos/.build/arm64-apple-macosx/debug/DeepFacedMac.build/CameraFaceTracker.swift.o"
         },
         {
           "kind" : "file",

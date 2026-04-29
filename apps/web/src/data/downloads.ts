@@ -8,7 +8,7 @@ export const desktopReleases: DesktopRelease[] = [
     version: "0.1.0-alpha",
     status: "available",
     href: "/downloads/deep-faced-mac-alpha.dmg",
-    notes: "Apple Silicon and Intel macOS app scaffold for local rendering and virtual camera development.",
+    notes: "macOS app bundle with camera permission metadata, Deep Faced icon, local face tracking, and composed-frame virtual camera pipeline.",
   },
   {
     id: "ios-later",

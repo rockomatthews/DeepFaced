@@ -22,9 +22,12 @@ the practical route is a paired Mac app plus iPhone camera/renderer handoff.
 ## Current App Shape
 
 - Native shell: SwiftUI app scaffold in [macos](../macos).
-- Renderer: placeholder SwiftUI preview until the DeepAR macOS renderer or embedded web renderer is
-  selected.
-- Bridge: `DeepFacedVirtualCamera` module receives processed frames.
+- Renderer: SwiftUI camera preview with AVFoundation capture and Vision face detection. The current
+  prototype moves and scales a stylized face overlay with the detected face rectangle; DeepAR mesh
+  deformation should replace the overlay renderer when native DeepAR assets are available.
+- Bridge: `DeepFacedVirtualCamera` module receives processed frame metadata from the tracker. The
+  current publisher stores the latest frame and validates the runtime pipeline; a real Camera
+  Extension implementation still needs to copy composed pixel buffers into the system extension.
 - Backend: `MacCameraExtensionPublisher` boundary for the Camera Extension implementation.
 - Pairing: local handoff from the website to desktop, carrying only preset/effect IDs and settings.
 
@@ -47,8 +50,12 @@ feature explicitly asks the user to export or share media.
 
 ## Prototype Milestones
 
-1. Load a saved preset locally.
-2. Render processed frames in the desktop renderer.
-3. Copy frames into a native bridge.
-4. Publish a macOS virtual camera device.
-5. Add diagnostics for permissions, camera device state, frame rate, and dropped frames.
+1. Load a saved preset locally. Done in the SwiftUI prototype.
+2. Detect the user face from the Mac camera and move the selected face overlay with the head. Done
+   with AVFoundation and Vision.
+3. Send selected preset IDs and normalized face frames into the virtual camera pipeline. Done in the
+   prototype publisher boundary.
+4. Render composed pixel buffers in the desktop renderer.
+5. Copy composed pixel buffers into a native Camera Extension bridge.
+6. Publish a macOS virtual camera device.
+7. Add diagnostics for permissions, camera device state, frame rate, and dropped frames.

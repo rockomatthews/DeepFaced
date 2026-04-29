@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "mac:build": "swift build --package-path macos",
+    "mac:package": "bash scripts/package-macos.sh",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
