@@ -10,10 +10,15 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
 
     let session = AVCaptureSession()
     var activePresetIdentifier = "cyber-visor"
+    var activeEffectPackagePath = "/effects/cyber-visor.deepar"
     var activeMaskStyle = MaskRenderStyle(red: 0.13, green: 0.83, blue: 0.93, presetIdentifier: "cyber-visor")
     var renderedFrameHandler: ((RenderedFrame) -> Void)?
 
-    private let renderer = CompositedFrameRenderer()
+    private let prototypeRenderer = PrototypeOverlayEffectRenderer()
+    private let deepARRenderer = DeepAREffectRenderer()
+    private var rendererMode: EffectRendererMode {
+        ProcessInfo.processInfo.environment["DEEPFACED_RENDERER"] == "deepar" ? .deepAR : .prototypeOverlay
+    }
     private let videoOutput = AVCaptureVideoDataOutput()
     private let captureQueue = DispatchQueue(label: "app.deepfaced.camera.capture")
     private let visionQueue = DispatchQueue(label: "app.deepfaced.camera.vision")
@@ -67,10 +72,14 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
             }
 
             do {
-                let composedBuffer = try self.renderer.render(
+                let renderer: EffectFrameRendering = self.rendererMode == .deepAR
+                    ? self.deepARRenderer
+                    : self.prototypeRenderer
+                let composedBuffer = try renderer.render(
                     sourcePixelBuffer: pixelBuffer,
                     normalizedFaceFrame: nextFrame,
-                    style: self.activeMaskStyle
+                    style: self.activeMaskStyle,
+                    effectPackagePath: self.activeEffectPackagePath
                 )
                 let renderedFrame = RenderedFrame(
                     timestamp: Date(),

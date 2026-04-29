@@ -82,17 +82,33 @@ create policy "Creators can submit faces"
     )
   );
 
-insert into storage.buckets (id, name, public)
-values ('face-effects', 'face-effects', true)
-on conflict (id) do nothing;
+do $$
+begin
+  if to_regclass('storage.buckets') is not null then
+    insert into storage.buckets (id, name, public)
+    values ('face-effects', 'face-effects', true)
+    on conflict (id) do nothing;
+  else
+    raise notice 'Supabase Storage is not initialized. Create a public "face-effects" bucket in the Supabase Storage dashboard.';
+  end if;
+end $$;
 
-create policy "Published effect packages are public"
-  on storage.objects
-  for select
-  using (bucket_id = 'face-effects');
+do $$
+begin
+  if to_regclass('storage.objects') is not null then
+    drop policy if exists "Published effect packages are public" on storage.objects;
+    create policy "Published effect packages are public"
+      on storage.objects
+      for select
+      using (bucket_id = 'face-effects');
 
-create policy "Authenticated creators can upload effect packages"
-  on storage.objects
-  for insert
-  to authenticated
-  with check (bucket_id = 'face-effects');
+    drop policy if exists "Authenticated creators can upload effect packages" on storage.objects;
+    create policy "Authenticated creators can upload effect packages"
+      on storage.objects
+      for insert
+      to authenticated
+      with check (bucket_id = 'face-effects');
+  else
+    raise notice 'Supabase Storage objects table is not initialized. Add storage policies after enabling Storage.';
+  end if;
+end $$;

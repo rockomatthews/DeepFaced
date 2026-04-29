@@ -1,0 +1,48 @@
+name: macOS Desktop Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "mac-v*"
+
+jobs:
+  build-sign-notarize:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Import Developer ID certificate
+        env:
+          DEEPFACED_CERTIFICATE_P12_BASE64: ${{ secrets.DEEPFACED_CERTIFICATE_P12_BASE64 }}
+          DEEPFACED_CERTIFICATE_PASSWORD: ${{ secrets.DEEPFACED_CERTIFICATE_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH="$RUNNER_TEMP/deepfaced-certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/deepfaced-signing.keychain-db"
+          echo "$DEEPFACED_CERTIFICATE_P12_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
+          security create-keychain -p "$DEEPFACED_CERTIFICATE_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$DEEPFACED_CERTIFICATE_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -P "$DEEPFACED_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package unsigned app
+        run: npm run mac:package -w apps/desktop
+
+      - name: Sign and notarize
+        env:
+          DEEPFACED_DEVELOPER_ID_APP: ${{ secrets.DEEPFACED_DEVELOPER_ID_APP }}
+          DEEPFACED_NOTARY_APPLE_ID: ${{ secrets.DEEPFACED_NOTARY_APPLE_ID }}
+          DEEPFACED_NOTARY_TEAM_ID: ${{ secrets.DEEPFACED_NOTARY_TEAM_ID }}
+          DEEPFACED_NOTARY_PASSWORD: ${{ secrets.DEEPFACED_NOTARY_PASSWORD }}
+        run: npm run mac:sign -w apps/desktop
+
+      - name: Upload notarized DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-faced-mac-alpha
+          path: apps/web/public/downloads/deep-faced-mac-alpha.dmg

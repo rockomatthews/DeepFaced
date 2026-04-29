@@ -24,6 +24,23 @@ cp "${BUILD_DIR}/release/DeepFacedCameraExtension" "${EXTENSION_BUNDLE}/Contents
 cp "${MACOS_DIR}/Assets/CameraExtension/Info.plist" "${EXTENSION_BUNDLE}/Contents/Info.plist"
 cp "${MACOS_DIR}/Assets/CameraExtension/DeepFacedCameraExtension.entitlements" "${EXTENSION_BUNDLE}/Contents/DeepFacedCameraExtension.entitlements"
 
+if [[ -d "${MACOS_DIR}/Effects" ]]; then
+  rm -rf "${APP_BUNDLE}/Contents/Resources/Effects"
+  ditto "${MACOS_DIR}/Effects" "${APP_BUNDLE}/Contents/Resources/Effects"
+fi
+
+if [[ -f "${DESKTOP_DIR}/.env.local" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${DESKTOP_DIR}/.env.local"
+  set +a
+fi
+
+if [[ -n "${DEEPAR_LICENSE_KEY:-}" ]]; then
+  /usr/libexec/PlistBuddy -c "Add :DeepARLicenseKey string ${DEEPAR_LICENSE_KEY}" "${APP_BUNDLE}/Contents/Info.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Set :DeepARLicenseKey ${DEEPAR_LICENSE_KEY}" "${APP_BUNDLE}/Contents/Info.plist"
+fi
+
 ICONSET="${RELEASE_DIR}/AppIcon.iconset"
 mkdir -p "${ICONSET}"
 

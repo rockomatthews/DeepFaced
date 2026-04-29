@@ -47,23 +47,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Box>
 
           <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-            <Button href="/faces" color="inherit">
-              Faces
-            </Button>
-            <Button href="/masks" color="inherit">
-              Masks
-            </Button>
-            <Button href="/tutorials" color="inherit">
-              Tutorials
-            </Button>
-            <Button href="/create" color="inherit">
-              Create
+            <Button href="/videos" color="inherit">
+              Videos
             </Button>
             <Button href="/download" color="inherit">
               Download
             </Button>
-            <Button href="/booth" variant="contained">
-              Face Booth
+            <Button href="/download" variant="contained">
+              Get the Mac App
             </Button>
           </Stack>
         </Stack>

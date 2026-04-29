@@ -39,6 +39,9 @@ struct ContentView: View {
                         Text("Last composed frame: \(model.lastPublishedResolution)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                        Text(model.extensionInstaller.status)
+                            .font(.caption)
+                            .foregroundStyle(model.extensionInstaller.needsUserApproval ? .yellow : .secondary)
                     }
 
                     Spacer()
@@ -52,6 +55,16 @@ struct ContentView: View {
                         model.startVirtualCamera()
                     }
                     .buttonStyle(.borderedProminent)
+
+                    Menu("Camera Extension") {
+                        Button("Install Extension") {
+                            model.installCameraExtension()
+                        }
+                        Button("Remove Extension") {
+                            model.uninstallCameraExtension()
+                        }
+                    }
+                    .menuStyle(.button)
                 }
                 .padding()
                 .background(.thinMaterial)

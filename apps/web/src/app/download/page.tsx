@@ -16,9 +16,8 @@ export default function DownloadPage() {
           <Chip label="Desktop companion" color="secondary" variant="outlined" sx={{ alignSelf: "flex-start" }} />
           <Typography variant="h2">Download Deep Faced for Mac</Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 820 }}>
-            The Mac app is the path to real virtual camera output for Zoom, Meet, Teams, and other
-            desktop apps. The website handles discovery and try-on; the Mac companion publishes the
-            processed feed as a camera device.
+            The Mac app is the product. Use it to run camera effects, install the virtual camera,
+            and record videos that can later be selected for display on this website.
           </Typography>
           <DownloadButtons />
         </Stack>

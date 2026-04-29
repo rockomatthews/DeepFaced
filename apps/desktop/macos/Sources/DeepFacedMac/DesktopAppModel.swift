@@ -14,12 +14,13 @@ struct FacePreset: Identifiable, Hashable {
 @MainActor
 final class DesktopAppModel: ObservableObject {
     @Published var selectedPreset: FacePreset
+    @Published var presets: [FacePreset]
     @Published var cameraState: VirtualCameraState = .stopped
     @Published var statusMessage = "Select a face and start the virtual camera."
     @Published var publishedFrameCount = 0
     @Published var lastPublishedResolution = "No frames yet"
 
-    let presets: [FacePreset] = [
+    private let fallbackPresets: [FacePreset] = [
         FacePreset(
             id: "cyber-visor",
             name: "Cyber Visor",
@@ -47,22 +48,32 @@ final class DesktopAppModel: ObservableObject {
     ]
 
     private let publisher = MacCameraExtensionPublisher()
+    private let effectCatalog = LocalEffectCatalog()
     let tracker = CameraFaceTracker()
+    let extensionInstaller = SystemExtensionInstaller()
 
     init() {
-        selectedPreset = presets[0]
-        tracker.activePresetIdentifier = presets[0].id
-        tracker.activeMaskStyle = presets[0].maskStyle
+        let loadedPresets = effectCatalog.loadPresets()
+        let initialPresets = loadedPresets.isEmpty ? fallbackPresets : loadedPresets
+        presets = initialPresets
+        selectedPreset = initialPresets[0]
+        tracker.activePresetIdentifier = initialPresets[0].id
+        tracker.activeEffectPackagePath = initialPresets[0].assetPath
+        tracker.activeMaskStyle = initialPresets[0].maskStyle
         tracker.renderedFrameHandler = { [weak self] frame in
             Task { @MainActor [weak self] in
                 await self?.publishTrackedFrame(frame)
             }
         }
+        statusMessage = loadedPresets.isEmpty
+            ? "Using starter masks. Add DeepAR effects to macos/Effects."
+            : "Loaded \(loadedPresets.count) DeepAR effects."
     }
 
     func select(_ preset: FacePreset) {
         selectedPreset = preset
         tracker.activePresetIdentifier = preset.id
+        tracker.activeEffectPackagePath = preset.assetPath
         tracker.activeMaskStyle = preset.maskStyle
         statusMessage = "Loaded \(preset.name)."
     }
@@ -79,6 +90,14 @@ final class DesktopAppModel: ObservableObject {
                 statusMessage = "Unable to start virtual camera: \(error.localizedDescription)"
             }
         }
+    }
+
+    func installCameraExtension() {
+        extensionInstaller.install()
+    }
+
+    func uninstallCameraExtension() {
+        extensionInstaller.uninstall()
     }
 
     func stopVirtualCamera() {
