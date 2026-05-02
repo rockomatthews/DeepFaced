@@ -25,7 +25,6 @@ cp "${BUILD_PRODUCTS_DIR}/DeepFacedMac" "${APP_BUNDLE}/Contents/MacOS/DeepFacedM
 cp "${MACOS_DIR}/Assets/Info.plist" "${APP_BUNDLE}/Contents/Info.plist"
 cp "${BUILD_PRODUCTS_DIR}/DeepFacedCameraExtension" "${EXTENSION_BUNDLE}/Contents/MacOS/DeepFacedCameraExtension"
 cp "${MACOS_DIR}/Assets/CameraExtension/Info.plist" "${EXTENSION_BUNDLE}/Contents/Info.plist"
-cp "${MACOS_DIR}/Assets/CameraExtension/DeepFacedCameraExtension.entitlements" "${EXTENSION_BUNDLE}/Contents/DeepFacedCameraExtension.entitlements"
 
 if [[ -d "${BUILD_PRODUCTS_DIR}/DeepAR.framework" ]]; then
   ditto "${BUILD_PRODUCTS_DIR}/DeepAR.framework" "${APP_BUNDLE}/Contents/Frameworks/DeepAR.framework"
@@ -49,6 +48,10 @@ if [[ -n "${DEEPAR_LICENSE_KEY:-}" ]]; then
     || /usr/libexec/PlistBuddy -c "Set :DeepARLicenseKey ${DEEPAR_LICENSE_KEY}" "${APP_BUNDLE}/Contents/Info.plist"
 fi
 
+if [[ -n "${COMMUNITY_CATALOG_URL:-}" ]]; then
+  /usr/libexec/PlistBuddy -c "Set :CommunityCatalogURL ${COMMUNITY_CATALOG_URL}" "${APP_BUNDLE}/Contents/Info.plist"
+fi
+
 ICONSET="${RELEASE_DIR}/AppIcon.iconset"
 mkdir -p "${ICONSET}"
 
@@ -69,6 +72,20 @@ if command -v qlmanage >/dev/null 2>&1 && command -v sips >/dev/null 2>&1 && com
   fi
 else
   cp "${MACOS_DIR}/Assets/AppIcon.svg" "${APP_BUNDLE}/Contents/Resources/AppIcon.svg"
+fi
+
+if command -v codesign >/dev/null 2>&1; then
+  if [[ -d "${APP_BUNDLE}/Contents/Frameworks/DeepAR.framework" ]]; then
+    codesign --force --sign - "${APP_BUNDLE}/Contents/Frameworks/DeepAR.framework"
+  fi
+
+  codesign --force --sign - \
+    --entitlements "${MACOS_DIR}/Assets/CameraExtension/DeepFacedCameraExtension.entitlements" \
+    "${EXTENSION_BUNDLE}"
+
+  codesign --force --deep --sign - \
+    --entitlements "${MACOS_DIR}/Assets/DeepFaced.entitlements" \
+    "${APP_BUNDLE}"
 fi
 
 if command -v hdiutil >/dev/null 2>&1; then

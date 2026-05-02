@@ -57,25 +57,14 @@ final class DesktopAppModel: ObservableObject {
         let initialPresets = loadedPresets.isEmpty ? fallbackPresets : loadedPresets
         presets = initialPresets
         selectedPreset = initialPresets[0]
-        tracker.activePresetIdentifier = initialPresets[0].id
-        tracker.activeEffectPackagePath = initialPresets[0].assetPath
-        tracker.activeMaskStyle = initialPresets[0].maskStyle
-        tracker.renderedFrameHandler = { [weak self] frame in
-            Task { @MainActor [weak self] in
-                await self?.publishTrackedFrame(frame)
-            }
-        }
         statusMessage = loadedPresets.isEmpty
             ? "Using starter masks. Add DeepAR effects to macos/Effects."
-            : "Loaded \(loadedPresets.count) DeepAR effects."
+            : "Loaded \(loadedPresets.count) DeepAR effects. Select an effect to preview it with the DeepAR SDK."
     }
 
     func select(_ preset: FacePreset) {
         selectedPreset = preset
-        tracker.activePresetIdentifier = preset.id
-        tracker.activeEffectPackagePath = preset.assetPath
-        tracker.activeMaskStyle = preset.maskStyle
-        statusMessage = "Loaded \(preset.name)."
+        statusMessage = "Previewing \(preset.name) with the DeepAR SDK."
     }
 
     func startVirtualCamera() {

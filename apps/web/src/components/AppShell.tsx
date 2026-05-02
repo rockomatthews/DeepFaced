@@ -47,6 +47,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Box>
 
           <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+            <Button href="/faces" color="inherit">
+              Faces
+            </Button>
+            <Button href="/upload" color="inherit">
+              Upload
+            </Button>
             <Button href="/videos" color="inherit">
               Videos
             </Button>

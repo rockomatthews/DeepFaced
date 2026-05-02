@@ -11,9 +11,9 @@ import { DownloadButtons } from "@/components/DownloadButtons";
 import { VideoShowcase } from "@/components/VideoShowcase";
 
 const stats = [
-  ["Mac app first", "Download the desktop app to use Deep Faced effects with your camera."],
-  ["Selected recordings", "The site displays curated videos recorded from the Mac app."],
-  ["No web editor", "Masks and effects live in the app, not as browser editing tools."],
+  ["Mac app first", "Use DeepAR faces and wearables with your real webcam."],
+  ["Creator profiles", "Upload Studio-exported .deepar effects and share them with the community."],
+  ["Snap Camera style", "Browse published faces, install them, and switch effects in the Mac app."],
 ];
 
 export default function Home() {
@@ -21,13 +21,13 @@ export default function Home() {
     <AppShell>
       <Stack spacing={8} sx={{ py: { xs: 6, md: 10 } }}>
         <Stack spacing={4} sx={{ alignItems: "center", textAlign: "center" }}>
-          <Chip label="Mac camera effects app" color="secondary" variant="outlined" />
+          <Chip label="DeepAR faces for webcams" color="secondary" variant="outlined" />
           <Typography variant="h1" sx={{ maxWidth: 980, fontSize: { xs: 56, md: 104 } }}>
-            Deep Faced for Mac.
+            Make faces. Use them on camera.
           </Typography>
           <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 780 }}>
-            Download the Mac app to use face effects with your camera. The website is a simple home
-            for the app download and selected videos recorded from the app.
+            Deep Faced is becoming a Snap Camera-style catalog for DeepAR faces and 3D wearables:
+            creator profiles on the web, a shared effect gallery, and a Mac app that runs them live.
           </Typography>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <Button
@@ -37,6 +37,9 @@ export default function Home() {
               endIcon={<ArrowForwardIcon />}
             >
               Download for Mac
+            </Button>
+            <Button href="/faces" size="large" variant="outlined">
+              Browse Faces
             </Button>
             <Button href="/videos" size="large" variant="outlined">
               Watch Videos

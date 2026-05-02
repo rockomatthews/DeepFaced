@@ -12,6 +12,8 @@ struct LocalEffectCatalog {
 
     private func candidateEffectRoots() -> [URL] {
         var candidates: [URL] = []
+        let communityCache = CommunityEffectCache()
+        candidates.append(communityCache.rootDirectory)
 
         if let bundledEffects = Bundle.main.resourceURL?.appending(path: "Effects") {
             candidates.append(bundledEffects)

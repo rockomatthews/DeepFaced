@@ -1,10 +1,12 @@
 import CoreGraphics
+import CoreMedia
 import CoreVideo
 import DeepAR
 import DeepFacedVirtualCamera
+import Dispatch
 import Foundation
 
-final class NativeDeepAREffectRenderer: EffectFrameRendering {
+final class NativeDeepAREffectRenderer: NSObject, EffectFrameRendering, DeepARDelegate {
     let mode: EffectRendererMode = .deepAR
 
     private let deepAR = DeepAR()
@@ -12,6 +14,8 @@ final class NativeDeepAREffectRenderer: EffectFrameRendering {
     private var isInitialized = false
     private var currentEffectPackagePath: String?
     private var renderSize: CGSize = .zero
+    private var latestFrameBuffer: CVPixelBuffer?
+    private var lastErrorMessage: String?
 
     init?(licenseKey: String?) {
         guard let licenseKey, !licenseKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -19,7 +23,10 @@ final class NativeDeepAREffectRenderer: EffectFrameRendering {
         }
 
         self.licenseKey = licenseKey
+        super.init()
         deepAR.setLicenseKey(licenseKey)
+        deepAR.delegate = self
+        deepAR.changeLiveMode(false)
     }
 
     func render(
@@ -34,15 +41,28 @@ final class NativeDeepAREffectRenderer: EffectFrameRendering {
 
         let width = CVPixelBufferGetWidth(sourcePixelBuffer)
         let height = CVPixelBufferGetHeight(sourcePixelBuffer)
-        try initializeIfNeeded(width: width, height: height)
-        switchEffectIfNeeded(effectPackagePath)
+        performOnMainThread {
+            self.initializeIfNeeded(width: width, height: height)
+            self.switchEffectIfNeeded(effectPackagePath)
+            self.deepAR.processFrame(sourcePixelBuffer, mirror: true)
+        }
 
-        let outputBuffer = try makeOutputBuffer(width: width, height: height)
-        deepAR.processFrameAndReturn(sourcePixelBuffer, outputBuffer: outputBuffer, mirror: true)
-        return outputBuffer
+        return latestFrameBuffer ?? sourcePixelBuffer
     }
 
-    private func initializeIfNeeded(width: Int, height: Int) throws {
+    func frameAvailable(_ sampleBuffer: CMSampleBuffer!) {
+        guard let sampleBuffer, let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+
+        latestFrameBuffer = pixelBuffer
+    }
+
+    func onError(withCode code: ARErrorType, error: String!) {
+        lastErrorMessage = error
+    }
+
+    private func initializeIfNeeded(width: Int, height: Int) {
         let nextSize = CGSize(width: width, height: height)
 
         guard !isInitialized || renderSize != nextSize else {
@@ -65,7 +85,7 @@ final class NativeDeepAREffectRenderer: EffectFrameRendering {
             return
         }
 
-        deepAR.switchEffect(withSlot: "effect", path: effectPackagePath)
+        deepAR.switchEffect(withSlot: "mask", path: effectPackagePath)
         currentEffectPackagePath = effectPackagePath
     }
 
@@ -90,6 +110,14 @@ final class NativeDeepAREffectRenderer: EffectFrameRendering {
         }
 
         return outputBuffer
+    }
+
+    private func performOnMainThread(_ work: @escaping () -> Void) {
+        if Thread.isMainThread {
+            work()
+        } else {
+            DispatchQueue.main.sync(execute: work)
+        }
     }
 }
 

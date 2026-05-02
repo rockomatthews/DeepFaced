@@ -1,3 +1,4 @@
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -8,7 +9,17 @@ import { AppShell } from "@/components/AppShell";
 import { DownloadButtons } from "@/components/DownloadButtons";
 import { desktopReleases } from "@/data/downloads";
 
-export default function DownloadPage() {
+type DownloadPageProps = {
+  searchParams?: Promise<{
+    download?: string;
+  }>;
+};
+
+export default async function DownloadPage({ searchParams }: DownloadPageProps) {
+  const params = await searchParams;
+  const downloadStatus = params?.download;
+  const hasDownloadUrl = Boolean(process.env.MACOS_DMG_DOWNLOAD_URL);
+
   return (
     <AppShell>
       <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
@@ -19,6 +30,13 @@ export default function DownloadPage() {
             The Mac app is the product. Use it to run camera effects, install the virtual camera,
             and record videos that can later be selected for display on this website.
           </Typography>
+          {!hasDownloadUrl && (
+            <Alert severity={downloadStatus ? "warning" : "info"} sx={{ maxWidth: 820 }}>
+              The Mac download has been built, but the DMG needs to be uploaded to external file
+              hosting and configured with <strong>MACOS_DMG_DOWNLOAD_URL</strong> before this button
+              can serve the installer in production.
+            </Alert>
+          )}
           <DownloadButtons />
         </Stack>
 

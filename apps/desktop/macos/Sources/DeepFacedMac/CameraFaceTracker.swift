@@ -1,5 +1,6 @@
 import AVFoundation
 import AppKit
+import CoreImage
 import DeepFacedVirtualCamera
 import SwiftUI
 import Vision
@@ -7,6 +8,8 @@ import Vision
 final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     @Published var faceFrame: CGRect?
     @Published var cameraStatus = "Camera not started."
+    @Published var renderedPreviewImage: CGImage?
+    @Published var isShowingRenderedOutput = false
 
     let session = AVCaptureSession()
     var activePresetIdentifier = "cyber-visor"
@@ -17,6 +20,7 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
     private let prototypeRenderer = PrototypeOverlayEffectRenderer()
     private let deepARRenderer = NativeDeepAREffectRenderer(licenseKey: DeepARLicense.current())
     private let videoOutput = AVCaptureVideoDataOutput()
+    private let imageContext = CIContext()
     private let captureQueue = DispatchQueue(label: "app.deepfaced.camera.capture")
     private let visionQueue = DispatchQueue(label: "app.deepfaced.camera.vision")
     private var isProcessingFrame = false
@@ -46,6 +50,15 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
         captureQueue.async { [weak self] in
             self?.session.stopRunning()
         }
+    }
+
+    func switchEffect(identifier: String, packagePath: String, style: MaskRenderStyle) {
+        activePresetIdentifier = identifier
+        activeEffectPackagePath = packagePath
+        activeMaskStyle = style
+        renderedPreviewImage = nil
+        isShowingRenderedOutput = false
+        cameraStatus = "Loading effect..."
     }
 
     func captureOutput(
@@ -91,13 +104,25 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
                     pixelBufferIdentifier: "\(self.activePresetIdentifier)-\(CMSampleBufferGetPresentationTimeStamp(sampleBuffer).seconds)",
                     pixelBuffer: composedBuffer
                 )
+                let didReceiveDeepARFrame = renderer.mode != .deepAR || composedBuffer !== pixelBuffer
+                let previewFrame = self.makePreviewFrame(
+                    from: composedBuffer,
+                    renderedBy: didReceiveDeepARFrame ? renderer.mode : .prototypeOverlay
+                )
 
                 DispatchQueue.main.async {
                     self.faceFrame = nextFrame
+                    self.renderedPreviewImage = previewFrame.image
+                    self.isShowingRenderedOutput = previewFrame.image != nil
                     let rendererLabel = renderer.mode == .deepAR ? "DeepAR" : "prototype"
+                    let outputLabel = !didReceiveDeepARFrame && renderer.mode == .deepAR
+                        ? "Waiting for DeepAR effect frames, showing live camera."
+                        : previewFrame.image == nil && renderer.mode == .deepAR
+                        ? "DeepAR returned a blank frame, showing live camera."
+                        : "Showing \(rendererLabel) output."
                     self.cameraStatus = nextFrame == nil
-                        ? "Looking for a face... Rendering with \(rendererLabel)."
-                        : "Face locked. Rendering with \(rendererLabel)."
+                        ? "Looking for a face. \(outputLabel)"
+                        : "Face locked. \(outputLabel)"
                     self.renderedFrameHandler?(renderedFrame)
                     self.isProcessingFrame = false
                 }
@@ -120,6 +145,61 @@ final class CameraFaceTracker: NSObject, ObservableObject, AVCaptureVideoDataOut
                 }
             }
         }
+    }
+
+    private func makePreviewFrame(from pixelBuffer: CVPixelBuffer, renderedBy mode: EffectRendererMode) -> (image: CGImage?, isBlank: Bool) {
+        let isBlank = mode == .deepAR && Self.isMostlyBlank(pixelBuffer)
+        guard !isBlank else {
+            return (nil, true)
+        }
+
+        let image = CIImage(cvPixelBuffer: pixelBuffer)
+        let rect = CGRect(
+            x: 0,
+            y: 0,
+            width: CVPixelBufferGetWidth(pixelBuffer),
+            height: CVPixelBufferGetHeight(pixelBuffer)
+        )
+        return (imageContext.createCGImage(image, from: rect), false)
+    }
+
+    private static func isMostlyBlank(_ pixelBuffer: CVPixelBuffer) -> Bool {
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer {
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly)
+        }
+
+        guard
+            CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_32BGRA,
+            let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)
+        else {
+            return false
+        }
+
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let pixels = baseAddress.assumingMemoryBound(to: UInt8.self)
+        let sampleStepX = max(width / 16, 1)
+        let sampleStepY = max(height / 16, 1)
+        var sampleCount = 0
+        var brightSampleCount = 0
+
+        for y in stride(from: 0, to: height, by: sampleStepY) {
+            for x in stride(from: 0, to: width, by: sampleStepX) {
+                let offset = y * bytesPerRow + x * 4
+                let blue = Int(pixels[offset])
+                let green = Int(pixels[offset + 1])
+                let red = Int(pixels[offset + 2])
+                sampleCount += 1
+
+                if red + green + blue > 36 {
+                    brightSampleCount += 1
+                }
+            }
+        }
+
+        return sampleCount > 0 && Double(brightSampleCount) / Double(sampleCount) < 0.02
     }
 
     private func configureAndStartSession() {
@@ -203,15 +283,17 @@ struct CameraPreview: NSViewRepresentable {
 }
 
 final class PreviewView: NSView {
-    override var wantsUpdateLayer: Bool {
-        true
+    let previewLayer = AVCaptureVideoPreviewLayer()
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        layer = previewLayer
     }
 
-    var previewLayer: AVCaptureVideoPreviewLayer {
-        layer as! AVCaptureVideoPreviewLayer
-    }
-
-    override func makeBackingLayer() -> CALayer {
-        AVCaptureVideoPreviewLayer()
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        wantsLayer = true
+        layer = previewLayer
     }
 }
